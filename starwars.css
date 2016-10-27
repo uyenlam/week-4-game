@@ -1,0 +1,56 @@
+body{
+	background-image: url("img/star-wars-background.jpg");
+	padding-left: 20px;
+	overflow: auto;
+}
+
+h1{
+	font-weight: bold;
+	font-size: 30px;
+	color: white;
+	border: black 4px;
+	margin-left: 40px;
+}
+
+h2{
+	font-weight: bold;
+	font-size: 20px;
+	color: white;
+	border: black 4px;
+}
+
+p{
+	text-align: center;
+}
+
+
+.character-box{
+	width: 160px;
+	height: 60%;
+	border: solid green 2px;
+	margin-left: 10px;
+	background-color: white;
+}
+
+.enemy-box{
+	width: 160px;
+	height: 60%;
+	border: solid black 2px;
+	margin-left: 10px;
+	background-color: #ff4d4d;
+	color: white;
+
+}
+
+.defender-box{
+	width: 160px;
+	height: 60%;
+	border: solid green 2px;
+	margin-left: 10px;
+	background-color: black;
+	color: white;
+}
+.character:hover{
+
+}
+

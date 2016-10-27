@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+	<!--Add CSS-->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<link rel="stylesheet" href="starwars.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  	
+
+</head>
+
+<body>
+	<h1>Star Wars RPG</h1>
+
+	<div class="container" id="your-character-section">
+		<h2>Your Character</h2>
+
+		<div class="row character-row"></div>
+
+	</div>
+
+	<div class="container" id="enemies-available-section">
+		
+		<h2>Enemies Available to Attack</h2>
+
+		<div class="row enemy-row">
+			<div class="enemy-choice" id="enemy-1"></div>
+			<div class="enemy-choice" id="enemy-2"></div>
+			<div class="enemy-choice" id="enemy-3"></div>
+		</div>
+	</div>
+
+	<div class="container" id="fight-section">
+		<h2>Fight Section</h2>
+
+		<button id="attack">Attack</button>
+
+	</div>
+
+	<div class="container" id="defender-section">
+		<h2>Defender</h2>
+		<div class="row defender-row">
+			<div id="defender"></div>
+		</div>
+		<div class="row action-row">
+			<div id="action-1"></div>
+			<div id="action-2"></div>
+			<div id="restart"></div>
+		</div>
+	</div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	// define objects with characters' stats
+	var obiWan = {
+				naMe: "Obi Wan",
+				charId: "obi-wan",
+				hP: 120,
+				attackPower: 8,
+				counterattackPower:  15,
+				isChosenEnemy: false,
+				isChosenChar: false,
+				isChosenDefender: false,
+				isWinner: false,
+				charPhotoLink: "img/star-wars-obi-wan-kenobi-movie.jpg",
+				};
+
+	// ---------------
+
+	var lukeSkywalker = {
+				naMe: "Luke Skywalker",
+				charId: "luke-skywalker",
+				hP: 100,
+				attackPower: 6,
+				counterattackPower: 5,
+				isChosenEnemy: false,
+				isChosenChar: false,
+				isChosenDefender: false,
+				isWinner: false,
+				charPhotoLink: "img/luke-skywalker.jpg",
+				}; 
+
+	// ---------------
+
+	var darthSidious = {
+				naMe: "Darth Sidious",
+				charId: "darth-sidious",
+				hP: 150,
+				attackPower: 10,
+				counterattackPower: 20,
+				isChosenEnemy: false,
+				isChosenChar: false,
+				isChosenDefender: false,
+				isWinner: false,
+				charPhotoLink: "img/darth-sidious.png",
+				};
+
+	// ---------------
+
+	var darthMaul = {
+				naMe: "Darth Maul",
+				charId: "darth-maul",
+				hP: 180,
+				attackPower: 15,
+				counterattackPower: 5,
+				isChosenEnemy: false,
+				isChosenChar: false,
+				isChosenDefender: false,
+				isWinner: false,
+				charPhotoLink: "img/darth-maul.png",
+				};
+
+	// --------------- 
+
+
+	var player = [];
+	var defender = [];
+	var fightingPlayerHp = [];
+	var fightingDefenderHp = [];
+	var playerChosen = false;
+	var defenderChosen = false;
+	var clickNum = -1;
+	var clickNumFight = 0;
+	var defeatedEnemy = 0;
+
+	// --------------- 
+	function gameBegin(){
+		// clear out all content
+		$('.character-row').empty();
+		$('.enemy-row').empty();
+		$('.defender-row').empty();
+		$('#action-1').empty();
+		$('#action-2').empty();
+		$('#restart').empty();
+
+		// display available characters for choosing on the screen
+		[obiWan, lukeSkywalker, darthMaul, darthSidious].forEach(function(player){
+			var t = '<div class="col-md-3 character" id="' + player.charId +'"> <p>' + player.naMe + '</p><img src="' + player.charPhotoLink + '" width=100%><p>' + player.hP + '</p> </div>';
+			$('.character-row').append(t);
+		});
+	};
+
+	gameBegin();
+	
+
+	// when the player selects a character
+	$('.character').on('click', function(){
+		var chosenId = this.id;
+		console.log("Chosen Character Id--------");
+		console.log(chosenId);
+
+		playerChosen = true;
+
+		$(this).addClass("player");
+
+		
+		[obiWan, lukeSkywalker, darthSidious, darthMaul].forEach(function(character){
+			if (chosenId === character.charId){
+				player = [
+					naMe = character.naMe,
+					hP = character.hP,
+					attackPower = character.attackPower,
+					counterattackPower = character.counterattackPower,
+					isChosenChar = true,
+					isChosenEnemy = character.isChosenEnemy,
+					isChosenDefender = character.isChosenDefender,
+					isWinner = character.isWinner,
+					charPhotoLink = character.charPhotoLink,
+				]
+				console.log("Player Stats:");
+				console.log(player);
+
+				var t = '<div class="col-md-3 character" id="' + this.charId +'"> <p>' + this.naMe + '</p><img src="' + this.charPhotoLink + '" width=100%><p>' + this.hP + '</p> </div>';
+				$('.character-row').append(t);
+
+			}
+		})
+
+	
+		
+		// if a box has class "character" but it is not clicked, here's what happens
+		$('.character').not(this).each(function(){
+	 		var chosenId = this.id;
+	 		console.log("Chosen Enemy Id--------");
+	 		console.log(chosenId);
+
+	 		$(this).detach();
+
+	 		[obiWan, lukeSkywalker, darthMaul, darthSidious].forEach(function(player){
+	 			if (chosenId === player.charId){
+	 				var t = '<div class="col-md-3 enemy enemy-box" id="' + player.charId +'"> <p>' + player.naMe + '</p><img src="' + player.charPhotoLink + '" width=100%><p>' + player.hP + '</p> </div>';
+					$('.enemy-row').append(t);
+	 			}
+				
+			});
+	 	})
+
+		// when the player click on a box with the id enemy.
+
+	 
+		$('.enemy').on('click', function(){ 
+
+				// enabling the attack button
+				$('#attack').prop('disabled', false);
+
+				// clear out the action lines  of "You attacked X for Y damages"
+				$('#action-1').html('');
+				$('#action-2').html('');
+
+				// reset HPs to original values
+				fightingPlayerHp = player[1];
+				fightingDefenderHp = defender[1];
+
+				// resets the number of clicks in that particular fight to zero. Note that this is DIFFERENT from clickNum, which is a count of clicks that the player, if winning, has accummulated over the rounds. clickNum goes into the calculation of player's attackPower, which goes higher everytime the player wins. clickNumFight, on the other hand, goes into the calculation of the player and defender HPs in any given fight.
+				clickNumFight = 0;
+
+				// set condition defenderChosen to true
+				defenderChosen = true;
+				console.log("Defender Chosen");
+				console.log(defenderChosen);
+
+				var chosenId = this.id;
+				console.log("Chosen Defender Id----------");
+				console.log(chosenId);
+
+				// detach the chosen character from the enemy-row
+				$(this).detach();
+
+				// append the chosen character to the defender-row
+				var defenderText = $(this).html();
+				var defenderTextComplete = '<div class="defender col-md-3" id="'+ this.id + '">'+ defenderText + ' </div>';
+				$('.defender-row').append(defenderTextComplete);
+
+				function mobilizeStats(){
+				$(this).html('<p>' + defender.naMe + '</p> <img src="' + defender.charPhotoLink + '" width=100%><p>'+ defender.hP +'</p>');
+				};
+
+				[obiWan, lukeSkywalker, darthSidious, darthMaul].forEach(function(character){
+					if (chosenId === character.charId){
+						defender = [
+							naMe = character.naMe,
+							hP = character.hP,
+							attackPower = character.attackPower,
+							counterattackPower = character.counterattackPower,
+							isChosenChar = character.isChosenChar,
+							isChosenEnemy = character.isChosenEnemy,
+							isChosenDefender = true,
+							isWinner = character.isWinner,
+							charPhotoLink = character.charPhotoLink,
+						]
+					console.log("Defender Stats:");
+					console.log(defender);
+					mobilizeStats();
+					}
+				})
+		
+		})
+	
+	
+
+	$('#attack').on('click', function(){
+
+		if (defenderChosen){
+
+			clickNum++;
+			console.log("Number of clicks");
+			console.log(clickNum);
+
+			clickNumFight++;
+			console.log("Click Number for calculating HP");
+			console.log(clickNumFight);
+
+			// calculating player attack power
+			var fightingAttackPower = player[2] + player[2] * clickNum;
+			console.log("Attack Power");
+			console.log(attackPower);
+
+			//calculating player HP
+			fightingPlayerHp = player[1] - defender[3]*clickNumFight;
+			console.log("Player HP:");
+			console.log(fightingPlayerHp);
+
+			//calculating defender HP
+			fightingDefenderHp = defender[1] - fightingAttackPower*clickNumFight;
+			console.log("Defender HP:");
+			console.log(fightingDefenderHp);
+
+
+			// display real-time HP information in the player and defender boxes
+			$('.player').html('<p>' + player[0] + '</p> <img src="' + player[8] + '" width=100%><p>'+ fightingPlayerHp +'</p>');
+			$('.defender').html('<p>' + defender[0] + '</p> <img src="' + defender[8] + '" width=100%><p>'+ fightingDefenderHp +'</p>')
+			$('#action-1').html('You attacked ' + defender[0] + ' for ' + fightingAttackPower + ' damage.');
+			$('#action-2').html(defender[0] + ' attacked you back for ' + defender[3] + ' damage.');
+
+			// set conditions for termination of the game
+			if (fightingPlayerHp <= 0 || fightingDefenderHp <= 0){
+				$('#attack').prop('disabled', true);
+				defenderChosen = false;
+			}
+
+			if (fightingPlayerHp <= 0){
+				// display GAME OVER message
+				$('#action-1').html('You have been defeated... GAME OVER!');
+				$('#action-2').html('');
+				$('#restart').html('<button id="restart-button">Restart</button>');
+
+			}
+
+			else if (fightingDefenderHp <= 0){
+				// remove the lost defender from the screen
+				$('.defender').detach();
+
+				// display winning message
+				$('#action-1').html('You have defeated ' + defender[0] + ', you can choose another enemy to fight.');
+				$('#action-2').html('');
+
+
+				// if the player wins, the player receives a bonus of one additional click worth of attack power
+				clickNum++;
+
+				// increases the number of defeated enemy
+				defeatedEnemy++;
+
+			}
+
+
+			// when the button restart is clicked, the entire page is wiped out, back to default, ready for another game.
+			$('#restart').on('click', function(){
+				gameBegin();
+			})
+
+			if (defeatedEnemy === 3){
+				$('#action-1').html('Congratulations! You have defeated all enemies! Click restart to play again.');
+				$('#action-2').html('');
+				$('#attack').prop('disabled', true);
+				$('#restart').html('<button id="restart-button">Restart</button>');
+			}
+
+		}
+
+		else {return;}
+
+		})
+	})
+
+})
+
+
+</script>
+	
+</body>
+</html>
