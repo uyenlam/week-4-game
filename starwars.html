@@ -140,13 +140,20 @@ $(document).ready(function(){
 	
 
 	function gameBegin(){
-		// clear out all content
+		// clear out all contents
 		$('.character-row').empty();
 		$('.enemy-row').empty();
 		$('.defender-row').empty();
 		$('#action-1').empty();
 		$('#action-2').empty();
 		$('#restart').empty();
+		player = [];
+		defender = [];
+		fightingPlayerHp = [];
+		fightingDefenderHp = [];
+		clickNum = -1;
+		clickNumFight = 0;
+		defeatedEnemy = 0;
 
 		// display available characters for choosing on the screen
 		[obiWan, lukeSkywalker, darthMaul, darthSidious].forEach(function(player){
@@ -304,8 +311,8 @@ $(document).ready(function(){
 			// display real-time HP information in the player and defender boxes
 			$('.player').html('<p>' + player[0] + '</p> <img src="' + player[8] + '" width=100%><p>'+ fightingPlayerHp +'</p>');
 			$('.defender').html('<p>' + defender[0] + '</p> <img src="' + defender[8] + '" width=100%><p>'+ fightingDefenderHp +'</p>')
-			$('#action-1').html('You attacked ' + defender[0] + ' for ' + fightingAttackPower + ' damage.');
-			$('#action-2').html(defender[0] + ' attacked you back for ' + defender[3] + ' damage.');
+			$('#action-1').html('<p class="action-text">You attacked ' + defender[0] + ' for ' + fightingAttackPower + ' damage.</p>');
+			$('#action-2').html('<p class="action-text">' + defender[0] + ' attacked you back for ' + defender[3] + ' damage.</p>');
 
 			// set conditions for termination of the game
 			if (fightingPlayerHp <= 0 || fightingDefenderHp <= 0){
@@ -315,7 +322,7 @@ $(document).ready(function(){
 
 			if (fightingPlayerHp <= 0){
 				// display GAME OVER message
-				$('#action-1').html('You have been defeated... GAME OVER!');
+				$('#action-1').html('<p class="action-text">You have been defeated... GAME OVER!</p>');
 				$('#action-2').html('');
 				$('#restart').html('<button id="restart-button">Restart</button>');
 
@@ -326,7 +333,7 @@ $(document).ready(function(){
 				$('.defender').detach();
 
 				// display winning message
-				$('#action-1').html('You have defeated ' + defender[0] + ', you can choose another enemy to fight.');
+				$('#action-1').html('<p class="action-text">You have defeated ' + defender[0] + ', you can choose another enemy to fight.</p>');
 				$('#action-2').html('');
 
 
@@ -345,7 +352,7 @@ $(document).ready(function(){
 			})
 
 			if (defeatedEnemy === 3){
-				$('#action-1').html('Congratulations! You have defeated all enemies! Click restart to play again.');
+				$('#action-1').html('<p class="action-text">Congratulations! You have defeated all enemies! Click restart to play again.</p>');
 				$('#action-2').html('');
 				$('#attack').prop('disabled', true);
 				$('#restart').html('<button id="restart-button">Restart</button>');

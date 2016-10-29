@@ -9,7 +9,7 @@ h1{
 	font-size: 30px;
 	color: white;
 	border: black 4px;
-	margin-left: 40px;
+	margin-left: 90px;
 }
 
 h2{
@@ -21,6 +21,21 @@ h2{
 
 p{
 	text-align: center;
+	font-weight: bold; 
+}
+
+#action-1, #action-2{
+	margin-left: 10px;
+}
+
+#restart{
+	margin-left: 10px;
+}
+
+.action-text{
+	text-align: left;
+	color: white;
+	size: 18px;
 }
 
 
